@@ -1,0 +1,6 @@
+@AnandTest_HostAddress = http://localhost:5178
+
+GET {{AnandTest_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
