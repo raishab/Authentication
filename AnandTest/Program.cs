@@ -1,5 +1,17 @@
+using Extension;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Extension.MiddleWare;
 var builder = WebApplication.CreateBuilder(args);
 
+var configuration = builder.Configuration;
+
+var authTokenOptions = SecurityUtils.CreateAuthTokenOptions(configuration);
+builder.Services.AddAuthentication(authTokenOptions);
+builder.Services.AddAuthorization();
+builder.Services.ConfigureDependencies();
+builder.Services.ConfigureOptions(configuration);
+builder.Services.AppPolicies();
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -17,7 +29,8 @@ if(app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseExceptionHandlers();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
