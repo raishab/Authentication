@@ -15,13 +15,6 @@ namespace Extension
         {
             services.AddAuthorization(auth =>
             {
-                auth.AddPolicy(AuthorizationPolicies.Admin_Authenticated, options =>
-                {
-                    options.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
-                    options.RequireAuthenticatedUser();
-                    options.RequireRole(RoleType.Admin.ToString(), RoleType.Viewer.ToString(), RoleType.Manager.ToString());
-                    options.Build();
-                });
                 auth.AddPolicy(AuthorizationPolicies.Admin_RoleType, options =>
                 {
                     options.RequireRole(RoleType.Admin.ToString());

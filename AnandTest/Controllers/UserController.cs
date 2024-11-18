@@ -1,9 +1,11 @@
 ﻿using ADL.AirportSampling.Utility.Enum;
 using APIModels;
 using APIModels.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services;
+using Utility;
 
 namespace AnandTest.Controllers
 {
@@ -16,11 +18,14 @@ namespace AnandTest.Controllers
             _userServices = userServices;
         }
 
+
+
         [HttpPost]
         [Route("Login")]
         public async Task<ApiResponse<UserLoginResponceModel>> Login([FromBody]UserLoginRequestModel model)
         {
             return await _userServices.AuthenticateUser(model);
         }
+
     }
 }

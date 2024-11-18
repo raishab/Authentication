@@ -9,6 +9,7 @@ namespace Utility
     public struct StoredProcedure
     {
         public const string ValidateUsers = "Sp_getuser";
+        public const string GetAllUser = "SP_GetAllUser";
     }
 
     public struct DBConstants

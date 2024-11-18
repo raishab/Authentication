@@ -24,5 +24,6 @@ namespace Utility
         public const string Login_Successfully = "Login Successfully";
         public const string Save = "Save successfully.";
         public const string Something_Went_Wrong = "Something Went Wrong";
+        public const string No_Record_Found = "No records found.";
     }
 }

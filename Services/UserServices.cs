@@ -17,6 +17,7 @@ using System.Net;
 using System.Security.Claims;
 using ClaimTypes = System.Security.Claims.ClaimTypes;
 using Extension;
+using System.Reflection;
 
 namespace Services
 {
@@ -43,12 +44,14 @@ namespace Services
             {
                 if(dbUser != null)
                 {
-                    dbUser.AuthTokenValue = CreateToken(dbUser, RoleType.Admin.ToString(), RoleType.Admin);
+                    dbUser.AuthTokenValue = CreateToken(dbUser, 1, RoleType.Admin);
+
                 }
+
                 return ResponseHelper.GetResponse(ref dataTable, dbUser,
-                    ResponseMessage.Login_Successfully,
-                    !string.IsNullOrEmpty(dbUser.OtpErrorMessage) ? dbUser.OtpErrorMessage : ResponseMessage.Login_Successfully,
-                    false, ResponseStatusCode.Unauthorized);
+                      ResponseMessage.Login_Successfully,
+                      !string.IsNullOrEmpty(dbUser.OtpErrorMessage) ? dbUser.OtpErrorMessage : ResponseMessage.Login_Successfully,
+                      false, ResponseStatusCode.Unauthorized);
             }
             else
             {
@@ -58,8 +61,7 @@ namespace Services
                     false, ResponseStatusCode.Unauthorized);
             }
         }
-
-        private string CreateToken(UserLoginResponceModel user, string audience, RoleType roleType)
+        private string CreateToken(UserLoginResponceModel user, int audience, RoleType roleType)
         {
             var handler = new JwtSecurityTokenHandler();
             var securityToken = CreateSecurityToken(handler, user, audience, roleType);
@@ -68,16 +70,16 @@ namespace Services
         }
 
         private SecurityToken CreateSecurityToken(JwtSecurityTokenHandler handler,
-            UserLoginResponceModel user, string audience, RoleType roleType)
+            UserLoginResponceModel user, int audience, RoleType roleType)
         {
             var identity = CreateClaimsIdentity(user, roleType);
             return handler.CreateToken(new SecurityTokenDescriptor
             {
                 Subject = identity,
                 Issuer = _tokenOptions.Issuer,
-                Audience = audience,
+                Audience = audience.ToString(),
                 SigningCredentials = _tokenOptions.SigningCredentials,
-                Expires = DateTime.Today.AddDays(1)
+                Expires = DateTime.UtcNow.AddHours(1)
             });
         }
 
